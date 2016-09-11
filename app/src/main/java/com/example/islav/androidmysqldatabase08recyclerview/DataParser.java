@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class DataParser extends AsyncTask<Void,Void,Integer> {
+public class DataParser extends AsyncTask<Void,Void,Boolean> {
 
 Context c;
    String jsonData;
@@ -39,45 +39,51 @@ ProgressDialog pd;
 
 
     @Override
-    protected Integer doInBackground(Void... params) {
+    protected Boolean doInBackground(Void... params) {
         return this.parseData();
     }
 
     @Override
-    protected void onPostExecute(Integer result) {
-        super.onPostExecute(result);
+    protected void onPostExecute(Boolean parsed) {
+        super.onPostExecute(parsed);
         pd.dismiss();
-        if(result==0){
-            Toast.makeText(c,"Unable to parse",Toast.LENGTH_SHORT).show();
-        }else{
-        //BIND DATA TO RECYCLERVIEW
+        if(parsed){
+            //BIND DATA TO RECYCLERVIEW
             CustomAdapter adapter=new CustomAdapter(c,spacecrafts);
             rv.setAdapter(adapter);
 
+        }else{
+            Toast.makeText(c,"Unable to parse",Toast.LENGTH_SHORT).show();
+
         }
     }
-    private int parseData(){
+    private Boolean parseData(){
         try{
             JSONArray ja = new JSONArray(jsonData);
-          JSONObject jo =null;
+          JSONObject jo;
             spacecrafts.clear();
             Spacecraft spacecraft;
             for(int i=0;i<ja.length();i++){
                 jo=ja.getJSONObject(i);
                 int id = jo.getInt("id");
                 String name =jo.getString("name");
+                String team =jo.getString("team");
+                String position =jo.getString("position");
                 String imageUrl =jo.getString("image");
+
                 spacecraft =new Spacecraft();
                 spacecraft.setId(id);
                 spacecraft.setName(name);
+                spacecraft.setTeam(team);
+                spacecraft.setPosition(position);
                 spacecraft.setImageUrl(imageUrl);
 
                 spacecrafts.add(spacecraft);
             }
-            return 1;
+            return true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return 0;
+        return false;
     }
 }

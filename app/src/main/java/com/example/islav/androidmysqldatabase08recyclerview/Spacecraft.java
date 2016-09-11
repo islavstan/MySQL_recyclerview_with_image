@@ -5,10 +5,27 @@ package com.example.islav.androidmysqldatabase08recyclerview;
  */
 public class Spacecraft {
     int id;
-    String name,imageUrl;
+    String name,team,position,imageUrl;
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
 
     public int getId() {
         return id;
+
     }
 
     public void setId(int id) {

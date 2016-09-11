@@ -1,6 +1,7 @@
 package com.example.islav.androidmysqldatabase08recyclerview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,14 +28,29 @@ public class CustomAdapter extends RecyclerView.Adapter<MyHolder> {
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        Spacecraft spacecraft =spacecrafts.get(position);
+        final Spacecraft spacecraft =spacecrafts.get(position);
         holder.nameTxt.setText(spacecraft.getName());
        PicassoClient.downloadImage(c,spacecraft.getImageUrl(),holder.img);
+         holder.setItemClickListener(new ItemClickListener() {
+             @Override
+             public void onItemClick() {
+                 openDetailActivity(spacecraft.getName(),spacecraft.getPosition(),spacecraft.getTeam(),spacecraft.getImageUrl());
 
+             }
+         });
     }
 
     @Override
     public int getItemCount() {
         return spacecrafts.size();
+    }
+
+    private void openDetailActivity(String name,String position,String team,String image){
+        Intent i =new Intent(c,DetailActivity.class);
+        i.putExtra("NAME_KEY",name);
+        i.putExtra("POSITION_KEY",position);
+        i.putExtra("TEAM_KEY",team);
+        i.putExtra("IMAGE_KEY",image);
+        c.startActivity(i);
     }
 }

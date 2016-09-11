@@ -49,8 +49,8 @@ public class Downloader extends AsyncTask<Void,Void,String> {
         if(s==null){
             Toast.makeText(c,"Не успешно",Toast.LENGTH_SHORT).show();
         }else {
-       DataParser parser=new DataParser(c,s,rv);
-            parser.execute();
+       new DataParser(c,s,rv).execute();;
+
         }
     }
 
